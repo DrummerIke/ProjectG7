@@ -47,6 +47,7 @@ model User {
   notes          Note[]
   commercialProposals CommercialProposal[]
   refreshTokens  RefreshToken[]
+  schedules      Schedule[]
 
   @@map("users")
 }
