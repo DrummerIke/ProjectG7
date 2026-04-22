@@ -3,27 +3,21 @@
 @tailwind utilities;
 
 :root {
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: dark;
-  color: #ffffff;
   background-color: #1a1a1a;
-
+  color: rgba(255, 255, 255, 0.87);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
+  margin: 0;
+  min-width: 320px;
   min-height: 100vh;
 }
 
@@ -31,20 +25,24 @@ body {
   min-height: 100vh;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 @layer components {
   .btn-primary {
-    @apply bg-bork-accent hover:bg-bork-accentHover text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+    @apply bg-bork-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded transition-colors duration-200;
   }
-
+  
   .btn-secondary {
-    @apply bg-bork-gray hover:bg-bork-light text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+    @apply bg-bork-secondary hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200;
   }
-
+  
   .card {
-    @apply bg-bork-dark rounded-xl p-6 shadow-lg border border-bork-gray;
+    @apply bg-bork-secondary rounded-lg p-6 shadow-lg;
   }
-
+  
   .input-field {
-    @apply w-full bg-bork-gray border border-bork-light rounded-lg px-4 py-2 text-white placeholder-bork-textSecondary focus:outline-none focus:border-bork-accent transition-colors duration-200;
+    @apply w-full bg-bork-dark border border-gray-700 rounded px-3 py-2 text-white focus:outline-none focus:border-bork-primary transition-colors duration-200;
   }
 }

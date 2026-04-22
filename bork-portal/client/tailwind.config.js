@@ -8,19 +8,12 @@ export default {
     extend: {
       colors: {
         bork: {
-          black: '#0a0a0a',
           dark: '#1a1a1a',
-          gray: '#2a2a2a',
-          light: '#3a3a3a',
-          accent: '#0066cc',
-          accentHover: '#0052a3',
-          text: '#ffffff',
-          textSecondary: '#a0a0a0'
+          primary: '#ff6b00',
+          secondary: '#2d2d2d',
+          accent: '#4a9eff'
         }
-      },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-      },
+      }
     },
   },
   plugins: [],
