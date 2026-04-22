@@ -2,36 +2,42 @@
 # Dependencies
 node_modules/
 
+# Build outputs
+dist/
+build/
+.next/
+.nuxt/
+out/
+
+# TypeScript/JavaScript
+*.tsbuildinfo
+*.js.map
+*.ts.map
+
 # Environment variables
 .env
 .env.local
 .env.*
+!.env.example
 
-# Build outputs
-dist/
-build/
-target/
-
-# Cache directories
-.cache/
-.vite/
-.temp/
-
-# Logs
-*.log
-
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# IDE specific
+# IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Package lock files (already in repo but good to ignore in general)
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Prisma
+prisma/migrations/
+prisma/schema.prisma.bak
+
+# Temporary files
+*.tmp
+*.temp
 ```

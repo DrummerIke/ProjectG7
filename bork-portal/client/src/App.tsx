@@ -1,26 +1,30 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
-import Schedule from './pages/Schedule'
-import Requests from './pages/Requests'
-import CommercialProposals from './pages/CommercialProposals'
-import Tasks from './pages/Tasks'
-import Layout from './components/Layout'
+import { Routes, Route, Navigate } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
+import ProtectedRoute from './layouts/ProtectedRoute';
 
-function App() {
+// Placeholder pages
+const TasksPage = () => <div className="text-white">Страница задач (в разработке)</div>;
+const SchedulePage = () => <div className="text-white">Страница графика (в разработке)</div>;
+const ProposalsPage = () => <div className="text-white">Страница КП (в разработке)</div>;
+
+export default function App() {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Navigate to="/dashboard" replace />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="schedule" element={<Schedule />} />
-        <Route path="requests" element={<Requests />} />
-        <Route path="proposals" element={<CommercialProposals />} />
-        <Route path="tasks" element={<Tasks />} />
-      </Route>
-    </Routes>
-  )
-}
+      {/* Public routes */}
+      <Route path="/login" element={<LoginPage />} />
 
-export default App
+      {/* Protected routes */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/tasks" element={<TasksPage />} />
+        <Route path="/schedule" element={<SchedulePage />} />
+        <Route path="/proposals" element={<ProposalsPage />} />
+      </Route>
+
+      {/* Redirects */}
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+    </Routes>
+  );
+}
