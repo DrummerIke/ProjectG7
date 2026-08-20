@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: bork-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: bork_user
+      POSTGRES_PASSWORD: bork_password
+      POSTGRES_DB: bork_portal
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - bork-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bork_user -d bork_portal"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend Server
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: bork-server
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - DATABASE_URL=postgresql://bork_user:bork_password@postgres:5432/bork_portal?schema=public
+      - JWT_SECRET=${JWT_SECRET}
+      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+      - CLIENT_URL=${CLIENT_URL}
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - bork-network
+    command: sh -c "npx prisma migrate deploy && npm start"
+
+  # Frontend Client (Nginx)
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: bork-client
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    networks:
+      - bork-network
+
+networks:
+  bork-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

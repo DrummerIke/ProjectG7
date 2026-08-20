@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CONSULTANT_G6
+  LEADER_G6
+  ADMIN
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum TaskStatus {
+  NEW
+  IN_PROGRESS
+  REVIEW
+  DONE
+}
+
+enum ShiftType {
+  OFFICE
+  REMOTE
+  DAY_OFF
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  firstName String
+  lastName  String
+  role      Role     @default(CONSULTANT_G6)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  tasks         Task[]
+  requests      Request[]
+  notes         Note[]
+  commercialProposals CommercialProposal[]
+  
+  @@map("users")
+}
+
+model Task {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String?
+  status      TaskStatus @default(NEW)
+  userId      Int
+  user        User       @relation(fields: [userId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  
+  @@map("tasks")
+}
+
+model Request {
+  id          Int           @id @default(autoincrement())
+  type        String
+  description String
+  status      RequestStatus @default(PENDING)
+  userId      Int
+  user        User          @relation(fields: [userId], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  @@map("requests")
+}
+
+model Note {
+  id        Int      @id @default(autoincrement())
+  content   String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("notes")
+}
+
+model CommercialProposal {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("commercial_proposals")
+}
+
+model Schedule {
+  id        Int       @id @default(autoincrement())
+  date      DateTime
+  shiftType ShiftType
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("schedules")
+}
